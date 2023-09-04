@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/develop/php/Dockerfile
+      labels:
+        dev: true
+      args:
+        - USER_NAME=${USER_NAME}
+        - USER_ID=${USER_ID}
+        - USER_GROUP_NAME=${USER_GROUP_NAME}
+        - USER_GROUP_ID=${USER_GROUP_ID}
+    image: 'work-gitlab-handler/dev'
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/develop/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./docker/develop/php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./docker/develop/php/conf.d/docker-php-ext-opcache.ini:/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+    environment:
+      - XDEBUG_CONFIG=mode=debug client_port=9003
+      - PHP_IDE_CONFIG=serverName=docker
+    networks:
+      - network
+    env_file:
+      - www/.env
+    restart: unless-stopped
+
+networks:
+  network:
