@@ -22,8 +22,8 @@ services:
       - PHP_IDE_CONFIG=serverName=docker
     networks:
       - network
-    env_file:
-      - www/.env
+#    env_file:
+#      - www/.env
     restart: unless-stopped
 
 networks:
