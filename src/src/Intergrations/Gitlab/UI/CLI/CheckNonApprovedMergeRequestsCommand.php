@@ -13,8 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 #[AsCommand(
-    name: 'app:gitlab:notify-about-mr',
-    description: 'Получение MR для просмотра',
+    name: 'notify:gitlab:non-approved',
+    description: 'Оповещение о непросмотренных MR',
     hidden: false
 )]
 class CheckNonApprovedMergeRequestsCommand extends Command
