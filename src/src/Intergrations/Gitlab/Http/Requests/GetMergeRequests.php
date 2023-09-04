@@ -25,6 +25,12 @@ final class GetMergeRequests extends Request
         return $this;
     }
 
+    public function reviewerId(int $reviewerId): self
+    {
+        $this->query()->add('reviewer_id', $reviewerId);
+        return $this;
+    }
+
     public function opened(): self
     {
         $this->query()->add('state', 'opened');

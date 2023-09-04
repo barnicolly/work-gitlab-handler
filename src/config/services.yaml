@@ -7,6 +7,8 @@ parameters:
     gitlab.token: '%env(GITLAB_TOKEN)%'
     gitlab.url: '%env(GITLAB_URL)%'
     gitlab.project_id: '%env(GITLAB_PROJECT_ID)%'
+    gitlab.users.product: '%env(GITLAB_USER_PRODUCT)%'
+    gitlab.users.tech_lead: '%env(GITLAB_USER_TECH_LEAD)%'
 
 services:
     # default configuration for services in *this* file
