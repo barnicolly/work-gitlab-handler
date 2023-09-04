@@ -9,7 +9,6 @@ use App\Intergrations\Gitlab\Http\Requests\GetMergeRequests;
 
 class GetOpenedMergeRequestsWhereReviewerTask
 {
-
     public function __construct(
         private readonly ForgeConnector $forgeConnector,
         private readonly GetMergeRequests $request

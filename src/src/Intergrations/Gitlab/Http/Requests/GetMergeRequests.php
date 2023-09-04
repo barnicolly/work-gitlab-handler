@@ -36,5 +36,4 @@ final class GetMergeRequests extends Request
         $this->query()->add('state', 'opened');
         return $this;
     }
-
 }
