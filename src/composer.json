@@ -79,6 +79,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpstan": [
+            "php -d xdebug.mode=off ./vendor/bin/phpstan analyse --memory-limit=2G"
         ]
     },
     "conflict": {
@@ -92,6 +95,7 @@
         }
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
