@@ -8,5 +8,6 @@ use LogicException;
 
 class NotFoundProjectRoleException extends LogicException
 {
+    /** @var string $message */
     protected $message = 'Не найдена пользователь Gitlab с необходимой ролью';
 }
