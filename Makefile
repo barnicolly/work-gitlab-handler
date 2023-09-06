@@ -16,3 +16,5 @@ go: up ps php
 php:
 	docker-compose exec php sh
 
+cs:
+	docker-compose exec php composer php-cs-fixer
