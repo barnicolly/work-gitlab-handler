@@ -31,3 +31,6 @@ notify:
 
 cs:
 	docker-compose exec php composer php-cs-fixer
+
+phpstan:
+	docker-compose exec php composer phpstan
