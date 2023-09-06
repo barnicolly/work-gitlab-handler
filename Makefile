@@ -16,5 +16,9 @@ go: up ps php
 php:
 	docker-compose exec php sh
 
+notify:
+	docker-compose exec php bin/console app:gitlab:notify-about-mr
+	docker-compose exec php bin/console notify:gitlab:need-merge
+
 cs:
 	docker-compose exec php composer php-cs-fixer
