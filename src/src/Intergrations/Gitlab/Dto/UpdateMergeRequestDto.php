@@ -18,7 +18,6 @@ class UpdateMergeRequestDto
         return $this->labels;
     }
 
-    // Setters
     public function setLabels(array $labels): void
     {
         $this->labels = $labels;

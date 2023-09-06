@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Intergrations\Gitlab\Tasks;
 
+use App\Intergrations\Gitlab\Dto\Items\MergeRequestDto;
 use App\Intergrations\Gitlab\Tasks\Formatters\MergeRequestNotifyFormatterTask;
 use App\Intergrations\Telegram\Tasks\SendMessageTelegram;
 
@@ -20,6 +21,8 @@ class NotifyAboutNeedMergeTask
      * Получаем все MR
      * исключаем те, что принял продакт
      * оповещаем о том, что нужно влить ветку
+     *
+     * @param MergeRequestDto[] $openedMR
      */
     public function run(array $openedMR, int $userId): void
     {
@@ -28,11 +31,9 @@ class NotifyAboutNeedMergeTask
         $result = [];
 
         foreach ($openedMR as $mergeRequest) {
-            $mergeRequestId = $mergeRequest['iid'];
-            if ($mergeRequest['author']['id'] !== $userId) {
-                if (in_array($mergeRequestId, $reviewedMRIds, true)) {
-                    $result[] = $mergeRequest['title'];
-                }
+            $mergeRequestId = $mergeRequest->getIid();
+            if ($mergeRequest->getAuthor()->getId() !== $userId && in_array($mergeRequestId, $reviewedMRIds, true)) {
+                $result[] = $mergeRequest->getTitle();
             }
         }
 

@@ -8,6 +8,7 @@ use App\Entity\GitlabUser;
 use App\Enums\ProjectRole;
 use App\Exceptions\NotFoundProjectRoleException;
 use App\Intergrations\Gitlab\Contracts\NotifyStrategyInterface;
+use App\Intergrations\Gitlab\Dto\Items\MergeRequestDto;
 use App\Intergrations\Gitlab\Tasks\Formatters\MergeRequestNotifyFormatterTask;
 use App\Intergrations\Gitlab\Tasks\GetOpenedApprovedMergeRequestsIdsByReviewerIdTask;
 use App\Intergrations\Gitlab\Tasks\GetOpenedMergeRequestsTask;
@@ -27,19 +28,21 @@ class TechLeadNotifyStrategy implements NotifyStrategyInterface
 
     public function process(): void
     {
-        $openedMR = $this->getOpenedMergeRequestsTask->run();
         $techLead = $this->entityManager
             ->getRepository(GitlabUser::class)
             ->findOneBy(['role' => ProjectRole::TECH_LEAD]);
         if ($techLead === null) {
             throw new NotFoundProjectRoleException();
         }
+        $openedMR = $this->getOpenedMergeRequestsTask->run();
         $this->notifyAboutNonReviewedMR($openedMR, $techLead->getExternalUserId());
     }
 
     /**
      * Получаем все MR
      * исключаем те, что принял
+     *
+     * @param MergeRequestDto[] $openedMR
      */
     private function notifyAboutNonReviewedMR(array $openedMR, int $userId): void
     {
@@ -48,11 +51,11 @@ class TechLeadNotifyStrategy implements NotifyStrategyInterface
         $result = [];
 
         foreach ($openedMR as $mergeRequest) {
-            $mergeRequestId = $mergeRequest['iid'];
-            if (($mergeRequest['author']['id'] !== $userId) && !in_array($mergeRequestId, $reviewedMRIds, true)) {
+            $mergeRequestId = $mergeRequest->getIid();
+            if (($mergeRequest->getAuthor()->getId() !== $userId) && !in_array($mergeRequestId, $reviewedMRIds, true)) {
                 $result[] = [
-                    $mergeRequest['web_url'],
-                    $mergeRequest['title'],
+                    $mergeRequest->getWebUrl(),
+                    $mergeRequest->getTitle(),
                 ];
             }
         }

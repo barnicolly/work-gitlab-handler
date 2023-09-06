@@ -32,13 +32,13 @@ class CheckNeedMergeRequestsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $openedMR = $this->getOpenedMergeRequestsTask->run();
         $productManager = $this->entityManager
             ->getRepository(GitlabUser::class)
             ->findOneBy(['role' => ProjectRole::PRODUCT_MANAGER]);
         if ($productManager === null) {
             throw new NotFoundProjectRoleException();
         }
+        $openedMR = $this->getOpenedMergeRequestsTask->run();
         $this->notifyAboutNeedMergeTask->run($openedMR, $productManager->getExternalUserId());
         return Command::SUCCESS;
     }

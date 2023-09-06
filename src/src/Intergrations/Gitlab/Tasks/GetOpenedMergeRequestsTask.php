@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Intergrations\Gitlab\Tasks;
 
+use App\Intergrations\Gitlab\Dto\Items\MergeRequestDto;
 use App\Intergrations\Gitlab\Http\Connectors\ForgeConnector;
 use App\Intergrations\Gitlab\Http\Requests\GetMergeRequests;
 
@@ -15,9 +16,18 @@ class GetOpenedMergeRequestsTask
     ) {
     }
 
+    /**
+     * @return MergeRequestDto[]
+     */
     public function run(): array
     {
         $this->request->opened();
-        return $this->forgeConnector->send($this->request)->json();
+        $response = $this->forgeConnector->send($this->request)->json();
+        if ($response) {
+            foreach ($response as $item) {
+                $result[] = (new MergeRequestDto())->fromResponseArray($item);
+            }
+        }
+        return $result ?? [];
     }
 }
